@@ -193,7 +193,7 @@ def format_submission(text):
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
-await update.message.reply_text(
+    await update.message.reply_text(
     "👋 欢迎投稿到【富力二手闲置】\n\n"
     "📸 第一步：发送商品图片\n"
     "支持一张或多张图片，最多10张。\n\n"
