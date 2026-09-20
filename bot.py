@@ -7,7 +7,7 @@ from telegram.ext import Application, MessageHandler, ContextTypes, filters
 
 
 BOT_TOKEN = "".join(os.environ.get("BOT_TOKEN", "").split())
-WATERMARK = "富力二手闲置  @FLESXZPD"
+WATERMARK = "@FLESXZPD"
 
 
 async def add_watermark(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -18,13 +18,13 @@ async def add_watermark(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     photo = message.photo[-1]
     file = await context.bot.get_file(photo.file_id)
-
     data = await file.download_as_bytearray()
 
     image = Image.open(io.BytesIO(data)).convert("RGBA")
     draw = ImageDraw.Draw(image)
 
-    font_size = max(24, image.width // 35)
+    # 水印字体大小：比之前明显大
+    font_size = max(40, image.width // 18)
 
     try:
         font = ImageFont.truetype(
@@ -34,17 +34,18 @@ async def add_watermark(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception:
         font = ImageFont.load_default()
 
+    # 计算文字大小
     bbox = draw.textbbox((0, 0), WATERMARK, font=font)
-
     text_width = bbox[2] - bbox[0]
     text_height = bbox[3] - bbox[1]
 
-    x = image.width - text_width - 30
-    y = image.height - text_height - 30
+    # 图片正中央
+    x = (image.width - text_width) / 2
+    y = (image.height - text_height) / 2
 
-    # 阴影
+    # 黑色半透明阴影
     draw.text(
-        (x + 2, y + 2),
+        (x + 3, y + 3),
         WATERMARK,
         font=font,
         fill=(0, 0, 0, 100)
@@ -55,7 +56,7 @@ async def add_watermark(update: Update, context: ContextTypes.DEFAULT_TYPE):
         (x, y),
         WATERMARK,
         font=font,
-        fill=(255, 255, 255, 150)
+        fill=(255, 255, 255, 170)
     )
 
     output = io.BytesIO()
