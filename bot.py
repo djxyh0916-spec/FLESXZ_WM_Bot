@@ -152,7 +152,7 @@ def review_keyboard(submission_id):
 def format_submission(text):
 
     if not text:
-        return "出售 / 求购请联系：@Jackky547"
+        return "📋 出售 / 求购请联系：@FLESXZ_WM_Bot\n👤 人工服务：@Jackky547"
 
     lines = []
 
@@ -163,10 +163,11 @@ def format_submission(text):
         if not line:
             continue
 
+        # 出售
         if line.startswith("出售物品"):
             lines.append("📦 " + line)
 
-        elif line.startswith("价格") or line.startswith("价"):
+        elif line.startswith("价格"):
             lines.append("💰 " + line)
 
         elif line.startswith("位置"):
@@ -178,11 +179,19 @@ def format_submission(text):
         elif line.startswith("交易方式"):
             lines.append("🚚 " + line)
 
+        # 求购
+        elif line.startswith("求购物品"):
+            lines.append("🔎 " + line)
+
+        elif line.startswith("预算"):
+            lines.append("💰 " + line)
+
         else:
             lines.append(line)
 
     lines.append("")
-    lines.append("出售 / 求购请联系：@Jackky547")
+    lines.append("📋 出售 / 求购请联系：@FLESXZ_WM_Bot")
+    lines.append("👤 人工服务：@Jackky547")
 
     return "\n".join(lines)
 
@@ -194,7 +203,7 @@ def format_submission(text):
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(
-    "👋 欢迎投稿到【富力二手闲置】\n\n"
+    "👋 欢迎投稿到【金边二手闲置】\n\n"
     "📸 第一步：发送商品图片\n"
     "支持一张或多张图片，最多10张。\n\n"
     "📝 第二步：发送商品信息\n\n"
@@ -274,7 +283,10 @@ async def process_single_photo(message, context):
         text="📋 新投稿，请审核：",
         reply_markup=review_keyboard(submission_id),
     )
-
+    await message.reply_text(
+    "✅ 投稿成功！\n"
+    "📋 已提交管理员审核，请耐心等待发布。"
+)
 
 # =========================
 # 相册延迟处理
@@ -370,7 +382,11 @@ async def process_album_later(album_id, context):
             text=f"📋 收到 {len(processed_items)} 张图片（相册）\n\n请审核是否发布：",
             reply_markup=review_keyboard(submission_id),
         )
-
+        await context.bot.send_message(
+    chat_id=album[0]["message"].chat_id,
+    text="✅ 投稿成功！\n"
+         "📋 已提交管理员审核，请耐心等待发布。"
+)
     except asyncio.CancelledError:
         return
 
@@ -555,7 +571,7 @@ async def review_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             )
 
             await query.edit_message_text(
-                "✅ 已发布到富力二手闲置频道"
+                "✅ 已发布到金边二手闲置频道"
             )
 
         except Exception as e:
