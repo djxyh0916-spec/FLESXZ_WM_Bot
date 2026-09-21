@@ -152,7 +152,7 @@ def review_keyboard(submission_id):
 def format_submission(text):
 
     if not text:
-        return "📋 发布出售 / 求购请联系投稿机器人：@FLESXZ_WM_Bot\n👤 人工服务：@Jackky547"
+        return "📋 发布信息请联系投稿机器人：@FLESXZ_WM_Bot\n👤 人工服务：@Jackky547"
 
     lines = []
 
@@ -190,7 +190,7 @@ def format_submission(text):
             lines.append(line)
 
     lines.append("")
-    lines.append("📋 发布出售 / 求购请联系投稿机器人：@FLESXZ_WM_Bot")
+    lines.append("📋 发布信息请联系投稿机器人：@FLESXZ_WM_Bot")
     lines.append("👤 人工服务：@Jackky547")
 
     return "\n".join(lines)
